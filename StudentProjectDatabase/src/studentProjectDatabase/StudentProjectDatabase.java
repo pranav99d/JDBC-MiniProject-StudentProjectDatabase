@@ -150,9 +150,8 @@ public class StudentProjectDatabase {
 				
 				Statement stmt = conn.createStatement();
 				
-				String sql = "Select * from studentproject group by studentproject.st_no "
-						+ "having studentproject.designation = 'ANALYST' and studentproject.designation = 'PROGRAMMER' or studentproject.designation = 'MANAGER' ";
-
+				String sql = "Select st_no from studentproject group by prj_no having COUNT(designation) > 1; ";
+				
 	     		ResultSet rs = stmt.executeQuery(sql);
 			
 	     	    while(rs.next()) {
@@ -192,7 +191,7 @@ public class StudentProjectDatabase {
 			Statement stmt = conn.createStatement();
 			
 			String sql = "Select * From student, studentproject "
-					+ "where student.st_no = studentproject.st_no and studentproject.designation = 'PROGRAMMER' ";
+					+ "group by prj_no having COUNT(Distinct(studentproject.st_no))=3;";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()) {
