@@ -1,5 +1,9 @@
 package studentProjectDatabase;
 import java.sql.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class StudentProjectDatabase {
 	
@@ -150,15 +154,23 @@ public class StudentProjectDatabase {
 				
 				Statement stmt = conn.createStatement();
 				
-				String sql = "select st_no,prj_no from studentproject group by st_no,prj_no having (COUNT(designation) > 1); ";
+				String sql = "select st_no, COUNT(designation) from studentproject group by st_no,prj_no; ";
 				
 	     		ResultSet rs = stmt.executeQuery(sql);
-			
+	     		
+	     		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+	     		
 	     	    while(rs.next()) {
 				
-				System.out.println( "Student Number: "+ rs.getString(1) + " Project Number: " + rs.getString(2));
+				hm.put(rs.getString(1), rs.getInt(2));
 				
 	     	    }	
+	     	    int maxDesignation = (Collections.max(hm.values()));
+	     	   for (Entry<String, Integer> entry : hm.entrySet()) { 
+	               if (entry.getValue()==maxDesignation) {
+	                   System.out.println(entry.getKey()+" "+entry.getValue());    
+	               }
+	     	   }
 				conn.close();
 			
 		}
