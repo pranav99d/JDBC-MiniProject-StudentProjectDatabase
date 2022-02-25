@@ -160,14 +160,37 @@ public class StudentProjectDatabase {
 	     		
 	     		HashMap<String, Integer> hm = new HashMap<String, Integer>();
 	     		
-	     	    while(rs.next()) {
-				
-				hm.put(rs.getString(1), rs.getInt(2));
-				
-	     	    }	
+	     		int flag=1;
+	    		String a = null;
+	    		int b = 0;
+	    		while(rs.next())
+	    		{
+	    			if(flag==1)
+	    			{
+	    				 a= rs.getString(1);
+	    				 b = rs.getInt(2);
+	    				 hm.put(a, b);
+	    				flag=0;
+	    			}
+	    			else if(a.equalsIgnoreCase(rs.getString(1)) && flag==0)
+	    			{
+	    				if(b<rs.getInt(2))
+	    				{
+	    					b=rs.getInt(2);
+	    					hm.replace(a, b);
+	    				}
+	    				flag=1;
+	    				
+	    			}
+	    			else
+	    			{
+	    				hm.put(rs.getString(1),rs.getInt(2));
+	    			}
+	    				
+	    		}
 	     	    int maxDesignation = (Collections.max(hm.values()));
 	     	   for (Entry<String, Integer> entry : hm.entrySet()) { 
-	               if (entry.getValue()==maxDesignation) {
+	               if (entry.getValue() == maxDesignation) {
 	                   System.out.println(entry.getKey()+" "+entry.getValue());    
 	               }
 	     	   }
